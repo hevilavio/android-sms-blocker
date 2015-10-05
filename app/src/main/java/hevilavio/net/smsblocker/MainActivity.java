@@ -4,22 +4,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import hevilavio.net.smsblocker.database.UserDatabase;
+
 public class MainActivity extends AppCompatActivity {
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: Se o usuario já for registrado, enviar para RegisteredUserActivity
+        String registeredUser = new UserDatabase(getBaseContext()).getActiveUser();
+        Log.i(TAG, "registeredUser=" + registeredUser);
 
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        if(registeredUser != null){
+            sendToRegisteredUser(registeredUser, true);
+        }
+        else {
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+        }
+
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -31,14 +43,21 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    /** Called when the user clicks the 'Enviar' button */
+    /** Called when the user clicks in the 'Enviar' button */
     public void sendName(View view) {
-        Intent displayFirstNameActivity = new Intent(this, RegisteredUserActivity.class);
         EditText firstName = (EditText) findViewById(R.id.first_name);
         String firstNameContent = firstName.getText().toString();
-        displayFirstNameActivity.putExtra("firstName", firstNameContent);
 
-        startActivity(displayFirstNameActivity);
+        sendToRegisteredUser(firstNameContent, false);
+    }
 
+
+    private void sendToRegisteredUser(String userName, boolean alreadyRegistered) {
+        Intent registeredUserActivity = new Intent(this, RegisteredUserActivity.class);
+
+        registeredUserActivity.putExtra("userName", userName);
+        registeredUserActivity.putExtra("alreadyRegistered", alreadyRegistered);
+
+        startActivity(registeredUserActivity);
     }
 }

@@ -8,6 +8,12 @@
 
     <string name="registered_for">Registrado para:</string>
 
+    <string name="server_connection">Conexão com Servidor:</string>
+    <string name="sms_connection">Conexão com SMS:</string>
+    <string name="sqlite_connection">Conexão com SQLITE:</string>
+
+
+
     <string name="default_text">XXX</string>
 
 </resources>
