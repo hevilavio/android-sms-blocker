@@ -24,9 +24,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_confirmar"
-        android:id="@+id/btn_confirmar"
+        android:text="@string/btn_send"
+        android:id="@+id/btn_send"
         android:layout_below="@+id/first_name"
         android:layout_alignParentStart="true"
-        android:onClick="confirmName"/>
+        android:onClick="sendName"/>
 </RelativeLayout>

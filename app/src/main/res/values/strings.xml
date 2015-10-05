@@ -2,7 +2,7 @@
     <string name="app_name">SmsBlocker</string>
     <string name="action_settings">Settings</string>
     <string name="init_message">Insira seu primeiro nome:</string>
-    <string name="btn_confirmar">Confirmar</string>
+    <string name="btn_send">Enviar</string>
     <string name="title_activity_display_message">My Message</string>
 
 
