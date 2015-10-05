@@ -15,7 +15,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/display_message_content"
+    <include layout="@layout/registered_user_content"
         android:id="@+id/init_message" />
 
 

@@ -14,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO: Se o usuario já for registrado, enviar para RegisteredUserActivity
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    /** Called when the user clicks the Confirm button */
+    /** Called when the user clicks the 'Enviar' button */
     public void sendName(View view) {
         Intent displayFirstNameActivity = new Intent(this, RegisteredUserActivity.class);
         EditText firstName = (EditText) findViewById(R.id.first_name);

@@ -16,7 +16,7 @@ public class RegisteredUserActivity extends AppCompatActivity {
         Log.i(TAG, "inciando activity...");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_message_activity);
+        setContentView(R.layout.registered_user_activity);
 
         Intent intent = getIntent();
         String firstName = intent.getStringExtra("firstName");
@@ -25,7 +25,7 @@ public class RegisteredUserActivity extends AppCompatActivity {
 
         // TODO: Salvar no db o usuario registrado
 
-        // Iniciar Listener de SMS
+        // TODO: Iniciar Listener de SMS
 
         TextView textView = (TextView) findViewById(R.id.registered_for_name);
         Log.i(TAG, "textView encontrado, textView=" + textView);
