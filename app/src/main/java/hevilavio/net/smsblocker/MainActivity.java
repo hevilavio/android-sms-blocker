@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.EditText;
 
 import hevilavio.net.smsblocker.database.UserDatabase;
@@ -45,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user clicks in the 'Enviar' button */
     public void sendName(View view) {
-        EditText firstName = (EditText) findViewById(R.id.first_name);
-        String firstNameContent = firstName.getText().toString();
+        EditText userName = (EditText) findViewById(R.id.user_name);
+        String userNameContent = userName.getText().toString();
 
-        sendToRegisteredUser(firstNameContent, false);
+        sendToRegisteredUser(userNameContent, false);
     }
 
 

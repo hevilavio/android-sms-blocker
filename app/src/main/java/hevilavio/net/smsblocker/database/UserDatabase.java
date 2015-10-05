@@ -68,4 +68,8 @@ public class UserDatabase extends SQLiteOpenHelper{
         }
         return cursor.getString(cursor.getColumnIndex("name"));
     }
+
+    public void inactiveUser() {
+        getWritableDatabase().execSQL("update " + tableName + " set active = 0 where active = 1");
+    }
 }

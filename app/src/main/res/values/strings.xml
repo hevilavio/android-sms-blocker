@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SmsBlocker</string>
     <string name="action_settings">Settings</string>
-    <string name="init_message">Insira seu primeiro nome:</string>
+    <string name="init_message">Insira seu nome:</string>
     <string name="btn_send">Enviar</string>
     <string name="title_activity_display_message">My Message</string>
 
@@ -11,9 +11,16 @@
     <string name="server_connection">Conexão com Servidor:</string>
     <string name="sms_connection">Conexão com SMS:</string>
     <string name="sqlite_connection">Conexão com SQLITE:</string>
+    <string name="btn_unregister">Cancelar registro</string>
 
 
 
     <string name="default_text">XXX</string>
+
+    <string name="dialog_unregister_positive">SIM</string>
+    <string name="dialog_unregister_negative">NAO</string>
+    <string name="dialog_unregister_title">Cancelar registro</string>
+    <string name="dialog_unregister_message">"Tem certeza que deseja cancelar a sua conta?"</string>
+
 
 </resources>

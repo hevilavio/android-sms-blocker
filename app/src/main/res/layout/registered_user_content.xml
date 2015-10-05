@@ -77,4 +77,13 @@
         android:layout_alignTop="@+id/sqlite_connection"
         android:layout_alignStart="@+id/sms_connection_text" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_unregister"
+        android:id="@+id/btn_unregister"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="showAlertDialog"/>
+
 </RelativeLayout>
