@@ -41,24 +41,6 @@
         android:layout_toEndOf="@+id/server_connection"
         android:layout_marginStart="24dp" />
 
-    <!-- SMS -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/sms_connection"
-        android:id="@+id/sms_connection"
-        android:layout_below="@+id/server_connection"
-        android:layout_alignStart="@+id/server_connection" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/default_text"
-        android:id="@+id/sms_connection_text"
-        android:layout_alignTop="@+id/sms_connection"
-        android:layout_alignStart="@+id/server_connection_text" />
-
     <!-- Sqlite -->
     <TextView
         android:layout_width="wrap_content"
@@ -66,8 +48,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/sqlite_connection"
         android:id="@+id/sqlite_connection"
-        android:layout_below="@+id/sms_connection"
-        android:layout_alignStart="@+id/sms_connection" />
+        android:layout_below="@+id/server_connection"
+        android:layout_alignStart="@+id/server_connection" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +57,25 @@
         android:text="@string/default_text"
         android:id="@+id/sqlite_connection_text"
         android:layout_alignTop="@+id/sqlite_connection"
-        android:layout_alignStart="@+id/sms_connection_text" />
+        android:layout_alignStart="@+id/sms_count_text" />
+
+    <!-- SMS -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/sms_count"
+        android:id="@+id/sms_count"
+        android:layout_below="@+id/sqlite_connection"
+        android:layout_alignStart="@+id/sqlite_connection" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/default_text"
+        android:id="@+id/sms_count_text"
+        android:layout_alignTop="@+id/sms_count"
+        android:layout_alignStart="@+id/server_connection_text" />
 
     <Button
         android:layout_width="wrap_content"

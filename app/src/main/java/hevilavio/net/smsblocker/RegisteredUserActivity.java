@@ -33,31 +33,40 @@ public class RegisteredUserActivity extends AppCompatActivity {
         String userName = intent.getStringExtra("userName");
         boolean alreadyRegistered  = intent.getBooleanExtra("alreadyRegistered", false);
 
+        registerUserIfDoesnotRegistered(userName, alreadyRegistered);
 
-        // TODO: HC no servidor
+        // TODO: HC no servidor para mostrar na tela
 
-        // TODO: Salvar no db o usuario registrado
-        saveUserIfDoesnotRegistered(userName, alreadyRegistered);
-
-        // TODO: Iniciar Listener de SMS
-
-        TextView textView = (TextView) findViewById(R.id.registered_for_name);
-        Log.i(TAG, "textView encontrado, textView=" + textView);
-
-        textView.setText(userName);
+        ((TextView) findViewById(R.id.registered_for_name)).setText(userName);
+        ((TextView) findViewById(R.id.server_connection_text)).setText("N/A");
+        ((TextView) findViewById(R.id.sqlite_connection_text)).setText(userDatabase.hc());
+        ((TextView) findViewById(R.id.sms_count_text)).setText("0");
 
     }
 
-    private void saveUserIfDoesnotRegistered(String userName, boolean alreadyRegistered) {
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.i(TAG, "recebendo intent");
+        int amountOfSms = intent.getIntExtra("amountOfSms", 42);
+        ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(amountOfSms));
+    }
+
+    private void registerUserIfDoesnotRegistered(String userName, boolean alreadyRegistered) {
 
         if(alreadyRegistered){
             Log.i(TAG, "usuario ja existe, userName=" + userName);
-        }else{
+        }
+        else {
             long userId = userDatabase.createUser(userName);
             Log.i(TAG, "usuario criado, id=" + userId);
         }
     }
 
+    /**
+     * Quando usuario clica em R.id.btn_unregister
+     * */
     public void showAlertDialog(View view){
         Log.i(TAG, "showAlertDialog chamado");
 
@@ -78,7 +87,7 @@ public class RegisteredUserActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void unregisterUser() {
+    public void unregisterUser() {
 
         Log.i(TAG, "cancelando registro de usuario");
         userDatabase.inactiveUser();

@@ -13,11 +13,10 @@ import android.util.Log;
 public class UserDatabase extends SQLiteOpenHelper{
 
     private final String TAG = "UserDatabase";
+    private final String tableName = "users";
 
     private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "smsblocker.db";
-
-    private final String tableName = "users";
 
 
     private final String SQL_CREATE_TABLE = "create table " + tableName + " (" +
@@ -57,8 +56,8 @@ public class UserDatabase extends SQLiteOpenHelper{
 
     public String getActiveUser(){
 
-        Cursor cursor = getWritableDatabase().rawQuery("select name from " + tableName + " where" +
-                " active = 1", null);
+        Cursor cursor = getWritableDatabase()
+                .rawQuery("select name from " + tableName + " where active = 1", null);
 
         boolean hasData = cursor.moveToFirst();
         Log.i(TAG, "hasData=" + hasData);
@@ -67,6 +66,10 @@ public class UserDatabase extends SQLiteOpenHelper{
             return null;
         }
         return cursor.getString(cursor.getColumnIndex("name"));
+    }
+
+    public String hc(){
+        return getWritableDatabase().isDatabaseIntegrityOk() ? "OK" : "ERRO";
     }
 
     public void inactiveUser() {

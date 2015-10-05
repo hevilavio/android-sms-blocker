@@ -3,7 +3,6 @@ package hevilavio.net.smsblocker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,11 +12,17 @@ import hevilavio.net.smsblocker.database.UserDatabase;
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
 
+    private final UserDatabase userDatabase;
+
+    public MainActivity() {
+        this.userDatabase = new UserDatabase(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String registeredUser = new UserDatabase(getBaseContext()).getActiveUser();
+        String registeredUser = userDatabase.getActiveUser();
         Log.i(TAG, "registeredUser=" + registeredUser);
 
         if(registeredUser != null){
@@ -25,23 +30,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             setContentView(R.layout.activity_main);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
         }
-
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
-    /** Called when the user clicks in the 'Enviar' button */
     public void sendName(View view) {
         EditText userName = (EditText) findViewById(R.id.user_name);
         String userNameContent = userName.getText().toString();
