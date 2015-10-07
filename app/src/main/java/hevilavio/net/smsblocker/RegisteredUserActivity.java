@@ -31,8 +31,6 @@ public class RegisteredUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "inciando activity...");
 
-        hc();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registered_user_activity);
 
@@ -45,18 +43,22 @@ public class RegisteredUserActivity extends AppCompatActivity {
         // TODO: HC no servidor para mostrar na tela
 
         ((TextView) findViewById(R.id.registered_for_name)).setText(userName);
-        ((TextView) findViewById(R.id.server_connection_text)).setText("N/A");
+        ((TextView) findViewById(R.id.server_connection_text)).setText(checkInternetConnection());
         ((TextView) findViewById(R.id.sqlite_connection_text)).setText(userDatabase.hc());
         ((TextView) findViewById(R.id.sms_count_text)).setText("0");
 
     }
 
-    private void hc() {
+    private String checkInternetConnection() {
         AsyncTask<String, String, Boolean> execute = new HealhCheckServiceTask().execute("");
         try {
-            Log.i(TAG, "Arcane service healthCheck=" + execute.get());
+            Boolean hasConnection = execute.get();
+            Log.i(TAG, "Arcane service healthCheck=" + hasConnection);
+
+            return hasConnection ? "OK" : "ERRO-1";
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
+            return "ERRO-2";
         }
     }
 
