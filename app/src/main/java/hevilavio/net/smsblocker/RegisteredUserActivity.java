@@ -3,13 +3,18 @@ package hevilavio.net.smsblocker;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.concurrent.ExecutionException;
+
 import hevilavio.net.smsblocker.database.UserDatabase;
+import hevilavio.net.smsblocker.service.ArcaneServiceTask;
+import hevilavio.net.smsblocker.service.HealhCheckServiceTask;
 
 
 public class RegisteredUserActivity extends AppCompatActivity {
@@ -25,6 +30,8 @@ public class RegisteredUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "inciando activity...");
+
+        hc();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registered_user_activity);
@@ -42,6 +49,15 @@ public class RegisteredUserActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.sqlite_connection_text)).setText(userDatabase.hc());
         ((TextView) findViewById(R.id.sms_count_text)).setText("0");
 
+    }
+
+    private void hc() {
+        AsyncTask<String, String, Boolean> execute = new HealhCheckServiceTask().execute("");
+        try {
+            Log.i(TAG, "Arcane service healthCheck=" + execute.get());
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 
     @Override

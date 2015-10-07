@@ -19,8 +19,14 @@ public class ArcaneSmsListener implements SmsListener{
     public void onSmsReceived(Context context, List<Sms> smsList){
 
         Log.i(TAG, "Preparando task para envio de sms para Arcane, size=" + smsList.size());
+        ArcaneSms[] params = new ArcaneSms[smsList.size()];
 
-        ArcaneSms[] params = (ArcaneSms[]) smsList.toArray();
+        int i = 0;
+        for (Sms sms : smsList) {
+            ArcaneSms arcaneSms = ArcaneSms.buildFromSms("for test", sms);
+            params[i++] = arcaneSms;
+        }
+
         new ArcaneServiceTask().execute(params);
 
         Log.i(TAG, "Task de envio criada");

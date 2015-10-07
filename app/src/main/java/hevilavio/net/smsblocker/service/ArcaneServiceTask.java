@@ -12,6 +12,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import hevilavio.net.smsblocker.json.ArcaneSms;
 
@@ -39,7 +40,7 @@ public class ArcaneServiceTask extends AsyncTask<ArcaneSms[], String, String> {
 
 
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage() + "\n" + Log.getStackTraceString(e));
 
             return null;
         }
@@ -49,11 +50,14 @@ public class ArcaneServiceTask extends AsyncTask<ArcaneSms[], String, String> {
     public String sendToArcane(ArcaneSms[] param) throws IOException {
 
         Gson gson = new Gson();
+        OkHttpClient client = new OkHttpClient();
+
+        client.setConnectTimeout(10, TimeUnit.SECONDS);
+        client.setWriteTimeout(10, TimeUnit.SECONDS);
 
         for (ArcaneSms arcaneSms : param) {
             Log.i(TAG, "enviando SMS para server...");
 
-            OkHttpClient client = new OkHttpClient();
 
             RequestBody body = RequestBody.create(JSON, gson.toJson(arcaneSms));
             Request request = new Request.Builder()
@@ -70,6 +74,7 @@ public class ArcaneServiceTask extends AsyncTask<ArcaneSms[], String, String> {
 
         return "OK";
     }
+
 
 //    public static void main(String[] args) throws IOException {
 //
