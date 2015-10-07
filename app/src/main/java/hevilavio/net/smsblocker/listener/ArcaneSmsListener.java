@@ -5,20 +5,26 @@ import android.util.Log;
 
 import java.util.List;
 
+import hevilavio.net.smsblocker.json.ArcaneSms;
 import hevilavio.net.smsblocker.pojo.Sms;
+import hevilavio.net.smsblocker.service.ArcaneServiceTask;
 
 /**
  * Created by hevilavio on 10/5/15.
  */
-public class ExportSmsListener implements SmsListener{
+public class ArcaneSmsListener implements SmsListener{
 
-    private final String TAG = "ExportSmsListener";
+    private final String TAG = "ArcaneSmsListener";
 
     public void onSmsReceived(Context context, List<Sms> smsList){
 
-        for (Sms sms : smsList) {
-            Log.i(TAG, sms.toString());
-        }
+        Log.i(TAG, "Preparando task para envio de sms para Arcane, size=" + smsList.size());
+
+        ArcaneSms[] params = (ArcaneSms[]) smsList.toArray();
+        new ArcaneServiceTask().execute(params);
+
+        Log.i(TAG, "Task de envio criada");
+
 
         /*
         * TODO:

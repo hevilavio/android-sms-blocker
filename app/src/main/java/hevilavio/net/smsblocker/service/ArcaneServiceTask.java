@@ -1,64 +1,86 @@
 package hevilavio.net.smsblocker.service;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
-import java.util.Arrays;
+import java.io.IOException;
 
-import hevilavio.net.smsblocker.json.ArcaneApiResult;
 import hevilavio.net.smsblocker.json.ArcaneSms;
-import hevilavio.net.smsblocker.pojo.Sms;
 
 /**
  * Created by hevilavio on 10/6/15.
  */
-public class ArcaneServiceTask extends AsyncTask<ArcaneSms, String, String> {
+public class ArcaneServiceTask extends AsyncTask<ArcaneSms[], String, String> {
 
     private final String TAG = "ArcaneServiceTask";
-    private String url = "https://arcane-stream-8361.herokuapp.com//sms/teste";
+    private String url = "https://arcane-stream-8361.herokuapp.com/sms/teste";
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
-    protected String doInBackground(ArcaneSms... params) {
+    protected String doInBackground(ArcaneSms[]... params) {
 
-        if(params == null){
-            return "params is null";
+        Log.i(TAG, "iniciando tarefa...");
+
+        if(params == null || params.length == 0){
+            return "params is null or has no size";
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        try {
+            return sendToArcane(params[0]);
 
-        for (ArcaneSms arcaneSms : params) {
+
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+
+            return null;
+        }
+    }
+
+    @NonNull
+    public String sendToArcane(ArcaneSms[] param) throws IOException {
+
+        Gson gson = new Gson();
+
+        for (ArcaneSms arcaneSms : param) {
             Log.i(TAG, "enviando SMS para server...");
 
-            HttpEntity<ArcaneSms> entity = new HttpEntity<>(arcaneSms, headers);
+            OkHttpClient client = new OkHttpClient();
 
-            ResponseEntity<ArcaneApiResult> exchange =
-                    new RestTemplate().exchange(url, HttpMethod.POST, entity, ArcaneApiResult.class);
+            RequestBody body = RequestBody.create(JSON, gson.toJson(arcaneSms));
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Response response = client.newCall(request).execute();
 
-            Log.i(TAG, "SMS enviado, statusCode={" + exchange.getStatusCode()
-                    + "}, resposta={" + exchange.getBody() + "}");
+            System.out.println(response.code());
+
+            Log.i(TAG, "SMS enviado, statusCode={" + response.code()
+                    + "}, responseBody={" + response.body().string() + "}");
         }
 
         return "OK";
     }
 
-    public static void main(String[] args) {
-
-        Sms sms = new Sms("555", "body teste");
-        ArcaneSms params = ArcaneSms.buildFromSms("test user", sms);
-
-        String response = new ArcaneServiceTask().doInBackground(params);
-
-        if(response != "OK"){
-            throw new RuntimeException("failed!");
-        }
-
-    }
+//    public static void main(String[] args) throws IOException {
+//
+//        Sms sms = new Sms("555", "body teste");
+//        ArcaneSms[] params = new ArcaneSms[] { ArcaneSms.buildFromSms("test user", sms) };
+//
+//        new ArcaneServiceTask().sendToArcane(params);
+//
+//        if("P" != "OK"){
+//            throw new RuntimeException("failed!");
+//        }
+//
+//    }
 }
