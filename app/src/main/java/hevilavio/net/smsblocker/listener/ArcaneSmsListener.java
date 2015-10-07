@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import hevilavio.net.smsblocker.database.SmsDatabase;
 import hevilavio.net.smsblocker.database.UserDatabase;
 import hevilavio.net.smsblocker.json.ArcaneSms;
 import hevilavio.net.smsblocker.pojo.Sms;
@@ -23,11 +24,20 @@ public class ArcaneSmsListener implements SmsListener{
         ArcaneSms[] params = new ArcaneSms[smsList.size()];
 
         UserDatabase userDatabase = new UserDatabase(context);
+        SmsDatabase smsDatabase = new SmsDatabase(context);
+
+        String activeUser = userDatabase.getActiveUser();
 
         int i = 0;
         for (Sms sms : smsList) {
+
+            /**
+             * TODO: Mover este insert para outro SmsListener
+             * */
+            smsDatabase.insertSms(activeUser, sms);
+
             ArcaneSms arcaneSms = ArcaneSms.buildFromSms(
-                    userDatabase.getActiveUser(),
+                    activeUser,
                     sms);
             params[i++] = arcaneSms;
         }

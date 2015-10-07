@@ -10,11 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.concurrent.ExecutionException;
-
+import hevilavio.net.smsblocker.database.SmsDatabase;
 import hevilavio.net.smsblocker.database.UserDatabase;
-import hevilavio.net.smsblocker.service.ArcaneServiceTask;
 import hevilavio.net.smsblocker.service.HealhCheckServiceTask;
+
+import static hevilavio.net.smsblocker.constants.ExtraConstants.ALREADY_REGISTERED;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.USERNAME;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.AMOUNT_OF_SMS;
 
 
 public class RegisteredUserActivity extends AppCompatActivity {
@@ -22,9 +24,11 @@ public class RegisteredUserActivity extends AppCompatActivity {
     private final String TAG = "RegisteredUserActivity";
 
     private UserDatabase  userDatabase;
+    private SmsDatabase smsDatabase;
 
     public RegisteredUserActivity() {
         this.userDatabase = new UserDatabase(this);
+        this.smsDatabase = new SmsDatabase(this);
     }
 
     @Override
@@ -35,20 +39,21 @@ public class RegisteredUserActivity extends AppCompatActivity {
         setContentView(R.layout.registered_user_activity);
 
         Intent intent = getIntent();
-        String userName = intent.getStringExtra("userName");
-        boolean alreadyRegistered  = intent.getBooleanExtra("alreadyRegistered", false);
+        String userName = intent.getStringExtra(USERNAME);
+        boolean alreadyRegistered  = intent.getBooleanExtra(ALREADY_REGISTERED, false);
 
         registerUserIfDoesnotRegistered(userName, alreadyRegistered);
-
-        // TODO: HC no servidor para mostrar na tela
 
         ((TextView) findViewById(R.id.registered_for_name)).setText(userName);
         ((TextView) findViewById(R.id.server_connection_text)).setText(checkInternetConnection());
         ((TextView) findViewById(R.id.sqlite_connection_text)).setText(userDatabase.hc());
-        ((TextView) findViewById(R.id.sms_count_text)).setText("0");
+        ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(smsDatabase.count()));
 
     }
 
+    /**
+     * TODO: Mover este metodo para outro lugar
+     * */
     private String checkInternetConnection() {
         AsyncTask<String, String, Boolean> execute = new HealhCheckServiceTask().execute("");
         try {
@@ -67,8 +72,15 @@ public class RegisteredUserActivity extends AppCompatActivity {
         super.onNewIntent(intent);
 
         Log.i(TAG, "recebendo intent");
-        int amountOfSms = intent.getIntExtra("amountOfSms", 42);
-        ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(amountOfSms));
+
+        int amountOfSms = intent.getIntExtra(AMOUNT_OF_SMS, 42);
+
+        /**
+         * TODO: Tem um bug aqui, tem dados inseridos na tabela por outra thread.
+         * */
+        int total = smsDatabase.count() + amountOfSms;
+
+        ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(total));
     }
 
     private void registerUserIfDoesnotRegistered(String userName, boolean alreadyRegistered) {

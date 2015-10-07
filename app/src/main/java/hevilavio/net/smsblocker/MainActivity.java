@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import static hevilavio.net.smsblocker.constants.ExtraConstants.USERNAME;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.ALREADY_REGISTERED;
 import hevilavio.net.smsblocker.database.UserDatabase;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Chamado por Button.btn_send
+     * */
     public void sendName(View view) {
         EditText userName = (EditText) findViewById(R.id.user_name);
         String userNameContent = userName.getText().toString();
@@ -44,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private void sendToRegisteredUser(String userName, boolean alreadyRegistered) {
         Intent registeredUserActivity = new Intent(this, RegisteredUserActivity.class);
 
-        registeredUserActivity.putExtra("userName", userName);
-        registeredUserActivity.putExtra("alreadyRegistered", alreadyRegistered);
+        registeredUserActivity.putExtra(USERNAME, userName);
+        registeredUserActivity.putExtra(ALREADY_REGISTERED, alreadyRegistered);
 
         startActivity(registeredUserActivity);
     }
