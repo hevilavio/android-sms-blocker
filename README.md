@@ -9,6 +9,7 @@ Aplicativo para bloquear spam de sms.
     * Configurações > Segurança > Marque “Fontes desconhecidas”
 * Faça download do app [aqui.](https://drive.google.com/uc?export=download&id=0B7pOPqyhZ2Qmc3NxWEs2ekxzUGs)
 * Instale e abra o aplicativo.
+
 ### Configurando:
 * Na tela inicial, insira o seu nome e clique em 'ENVIAR'
 * Após isso, clique no 'botão do meio' do celular para minimizar o aplicativo.
