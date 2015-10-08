@@ -1,4 +1,4 @@
-# android-sms-blocker
+# Sms Blocker
 
 Aplicativo para bloquear spam de sms.
 
@@ -13,6 +13,6 @@ Aplicativo para bloquear spam de sms.
 ### Configurando:
 * Na tela inicial, insira o seu nome e clique em 'ENVIAR'
 * Após isso, clique no 'botão do meio' do celular para minimizar o aplicativo.
-* Pronto, o android-sms-blocker já estará rodando em plano de fundo : )
+* Pronto, o Sms Blocker já estará rodando em plano de fundo : )
 
 Obrigado!
