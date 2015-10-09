@@ -24,7 +24,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
     public SmsBroadcastReceiver() {
         this.listeners = new ArrayList<>();
 
-        listeners.add(new ArcaneSmsListener()); // manda os dados para o server
+        listeners.add(new DatabaseSmsListener()); // manda os dados para o server
         listeners.add(new UpdateUiListener()); // atualiza UI com # de sms recebidos
     }
 
