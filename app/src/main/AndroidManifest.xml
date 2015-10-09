@@ -29,6 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="hevilavio.net.smsblocker.service.SendDataToServerService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
 
         <receiver android:name=".listener.SmsBroadcastReceiver">
             <intent-filter>

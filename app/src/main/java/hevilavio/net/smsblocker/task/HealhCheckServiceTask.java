@@ -1,4 +1,4 @@
-package hevilavio.net.smsblocker.service;
+package hevilavio.net.smsblocker.task;
 
 import android.os.AsyncTask;
 import android.util.Log;

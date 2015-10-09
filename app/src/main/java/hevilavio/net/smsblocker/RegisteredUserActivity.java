@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import hevilavio.net.smsblocker.database.SmsDatabase;
 import hevilavio.net.smsblocker.database.UserDatabase;
-import hevilavio.net.smsblocker.service.HealhCheckServiceTask;
+import hevilavio.net.smsblocker.task.HealhCheckServiceTask;
 
 import static hevilavio.net.smsblocker.constants.ExtraConstants.ALREADY_REGISTERED;
 import static hevilavio.net.smsblocker.constants.ExtraConstants.USERNAME;
