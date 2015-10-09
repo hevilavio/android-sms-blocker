@@ -1,19 +1,24 @@
 package hevilavio.net.smsblocker.pojo;
 
-import java.util.Calendar;
-
 /**
  *
  * Created by hevilavio on 10/5/15.
  */
 public class Sms {
 
-    private String form;
-    private String body;
+    private final int id;
+    private final String form;
+    private final String body;
 
-    public Sms(String form, String body) {
+
+    public Sms(int id, String form, String body) {
+        this.id = id;
         this.form = form;
         this.body = body;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getForm() {

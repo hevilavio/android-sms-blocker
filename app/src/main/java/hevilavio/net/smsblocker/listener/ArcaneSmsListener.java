@@ -9,7 +9,6 @@ import hevilavio.net.smsblocker.database.SmsDatabase;
 import hevilavio.net.smsblocker.database.UserDatabase;
 import hevilavio.net.smsblocker.json.ArcaneSms;
 import hevilavio.net.smsblocker.pojo.Sms;
-import hevilavio.net.smsblocker.task.ArcaneServiceTask;
 
 /**
  * Created by hevilavio on 10/5/15.
@@ -42,7 +41,7 @@ public class ArcaneSmsListener implements SmsListener{
             params[i++] = arcaneSms;
         }
 
-        new ArcaneServiceTask().execute(params);
+//        new ArcaneServiceAsynTask().execute(params);
 
         Log.i(TAG, "Task de envio criada");
 

@@ -55,7 +55,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
                     String msgBody = msgs[i].getMessageBody();
 
                     Log.i(TAG, String.format("SMS: msgFrom=%s, body=%s", msgFrom, msgBody));
-                    smsList.add(new Sms(msgFrom, msgBody));
+                    smsList.add(new Sms(0, msgFrom, msgBody));
                 }
             }
         }

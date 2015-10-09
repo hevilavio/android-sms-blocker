@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hevilavio.net.smsblocker.pojo.Sms;
 
 /**
@@ -62,5 +65,31 @@ public class SmsDatabase extends CustomSQLiteOpenHelper {
             return 0;
         }
         return cursor.getInt(cursor.getColumnIndex("count"));
+    }
+
+
+    public List<Sms> getSmsPendingToSend() {
+
+        List<Sms> list = new ArrayList<>();
+        Cursor cursor = getWritableDatabase().query(false,
+                getTableName(),
+                null,
+                "sentToServer = 0",
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        while (cursor.moveToNext()){
+            Sms sms = new Sms(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("fromNumber")),
+                    cursor.getString(cursor.getColumnIndex("body"))
+            );
+
+            list.add(sms);
+        }
+        return list;
     }
 }
