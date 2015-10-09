@@ -10,25 +10,36 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import hevilavio.net.smsblocker.database.SmsDatabase;
 import hevilavio.net.smsblocker.json.ArcaneSms;
-import hevilavio.net.smsblocker.pojo.Sms;
 
 /**
  * Created by hevilavio on 10/6/15.
  */
-public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, Void, Boolean> {
+public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, Void, Pair<Integer, Boolean>> {
 
     private final String TAG = "ArcaneServiceAsynTask";
     private final String URL = "https://arcane-stream-8361.herokuapp.com/sms/teste";
     private final int TIMEOUT_SECONDS = 10;
     private final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
 
+    private final SmsDatabase smsDatabase;
+
+    public ArcaneServiceAsynTask(SmsDatabase smsDatabase) {
+        this.smsDatabase = smsDatabase;
+    }
+
+    /**
+     * @param params - Id do Sms | ArcaneSms
+     * @return  - Id do Sms | sentWithSuccess
+     * */
     @Override
-    protected Boolean doInBackground(Pair<Integer, ArcaneSms>... params) {
+    protected Pair<Integer, Boolean> doInBackground(Pair<Integer, ArcaneSms>... params) {
 
         if(params == null || params.length == 0){
             Log.w(TAG, "doInBackground, empty params...");
@@ -39,7 +50,19 @@ public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, V
         return sendSmsToArcane(param.first, param.second);
     }
 
-    public boolean sendSmsToArcane(int smsId, ArcaneSms arcaneSms) {
+    @Override
+    protected void onPostExecute(Pair<Integer, Boolean> result) {
+
+        int smsId = result.first;
+        Boolean sentWithSuccess = result.second;
+
+        if(sentWithSuccess){
+            Log.i(TAG, "onPostExecute.update, smsId=" + smsId);
+            smsDatabase.setSentToServerWithSuccess(smsId);
+        }
+    }
+
+    public Pair<Integer, Boolean> sendSmsToArcane(int smsId, ArcaneSms arcaneSms) {
 
         Log.i(TAG, "sendSmsToArcane.start"
                 + ", smsId=" + smsId);
@@ -61,18 +84,36 @@ public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, V
             Log.i(TAG, "sendSmsToArcane.start"
                     + ", smsId=" + smsId
                     + ", rCode=" + response.code()
-                    + ", rBody=" + response.body()
+                    + ", rBody=" + getResponseBody(response.body())
             );
-            return true;
+
+            return new Pair<>(smsId, true);
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage() + "\n" + Log.getStackTraceString(e));
+            logError(e.getMessage() + "\n" + Log.getStackTraceString(e));
 
-            return false;
+            return new Pair<>(smsId, false);
         }
     }
 
+    private String getResponseBody(ResponseBody responseBody) {
+        if(responseBody == null){
+            return "null";
+        }
 
+        try {
+            return responseBody.string();
+        } catch (IOException e) {
+            logError(e.getMessage() + "\n" + Log.getStackTraceString(e));
+            return "null";
+        }
+    }
+
+    private void logError(String msg) {
+        Log.e(TAG, msg);
+    }
+
+/*
     public static void main(String[] args) throws IOException {
 
         Sms sms = new Sms(0, "555", "body teste");
@@ -80,7 +121,5 @@ public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, V
         boolean ok = new ArcaneServiceAsynTask().sendSmsToArcane(1, ArcaneSms.buildFromSms("test user", sms));
 
         System.out.println(ok);
-
-
-    }
+    }*/
 }
