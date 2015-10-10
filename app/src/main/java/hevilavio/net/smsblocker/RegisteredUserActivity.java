@@ -3,7 +3,6 @@ package hevilavio.net.smsblocker;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,11 +11,15 @@ import android.widget.TextView;
 
 import hevilavio.net.smsblocker.database.SmsDatabase;
 import hevilavio.net.smsblocker.database.UserDatabase;
-import hevilavio.net.smsblocker.task.HealhCheckServiceTask;
+import hevilavio.net.smsblocker.service.ArcaneHcTask;
 
 import static hevilavio.net.smsblocker.constants.ExtraConstants.ALREADY_REGISTERED;
-import static hevilavio.net.smsblocker.constants.ExtraConstants.USERNAME;
 import static hevilavio.net.smsblocker.constants.ExtraConstants.AMOUNT_OF_SMS;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.INTERNET_CONN;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.INTERNET_CONN_STATUS;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.SMS_COUNT;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.USERNAME;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.WHO_IS;
 
 
 public class RegisteredUserActivity extends AppCompatActivity {
@@ -45,26 +48,18 @@ public class RegisteredUserActivity extends AppCompatActivity {
         registerUserIfDoesnotRegistered(userName, alreadyRegistered);
 
         ((TextView) findViewById(R.id.registered_for_name)).setText(userName);
-        ((TextView) findViewById(R.id.server_connection_text)).setText(checkInternetConnection());
+        ((TextView) findViewById(R.id.server_connection_text)).setText("?"); //
         ((TextView) findViewById(R.id.sqlite_connection_text)).setText(userDatabase.hc());
         ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(smsDatabase.count()));
 
+        new ArcaneHcTask(getApplicationContext()).execute();
     }
 
-    /**
-     * TODO: Mover este metodo para outro lugar
-     * */
-    private String checkInternetConnection() {
-        AsyncTask<String, String, Boolean> execute = new HealhCheckServiceTask().execute("");
-        try {
-            Boolean hasConnection = execute.get();
-            Log.i(TAG, "Arcane service healthCheck=" + hasConnection);
-
-            return hasConnection ? "OK" : "ERRO-1";
-        } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-            return "ERRO-2";
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        new ArcaneHcTask(getApplicationContext()).execute();
+        ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(smsDatabase.count()));
     }
 
     @Override
@@ -73,14 +68,26 @@ public class RegisteredUserActivity extends AppCompatActivity {
 
         Log.i(TAG, "recebendo intent");
 
-        int amountOfSms = intent.getIntExtra(AMOUNT_OF_SMS, 42);
+        String whoIs = intent.getStringExtra(WHO_IS);
+        Log.i(TAG, "onNewIntent, whoIs=" + whoIs);
 
         /**
-         * TODO: Tem um bug aqui, tem dados inseridos na tabela por outra thread.
+         * TODO: talvez isso possa ser feito de uma maneira melhor
          * */
-        int total = smsDatabase.count() + amountOfSms;
+        if(SMS_COUNT.equals(whoIs)){
 
-        ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(total));
+            int amountOfSms = intent.getIntExtra(AMOUNT_OF_SMS, 42);
+            /**
+             * TODO: Tem um bug aqui, tem dados inseridos na tabela por outra thread.
+             * */
+            int total = smsDatabase.count() + amountOfSms;
+            ((TextView) findViewById(R.id.sms_count_text)).setText(String.valueOf(total));
+        }
+        else if (whoIs.equals(INTERNET_CONN)){
+
+            String connStatus = intent.getStringExtra(INTERNET_CONN_STATUS);
+            ((TextView) findViewById(R.id.server_connection_text)).setText(connStatus);
+        }
     }
 
     private void registerUserIfDoesnotRegistered(String userName, boolean alreadyRegistered) {

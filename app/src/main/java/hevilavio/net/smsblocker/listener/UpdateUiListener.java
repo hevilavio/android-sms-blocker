@@ -10,6 +10,8 @@ import hevilavio.net.smsblocker.RegisteredUserActivity;
 import hevilavio.net.smsblocker.pojo.Sms;
 
 import static hevilavio.net.smsblocker.constants.ExtraConstants.AMOUNT_OF_SMS;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.WHO_IS;
+import static hevilavio.net.smsblocker.constants.ExtraConstants.SMS_COUNT;
 
 /**
  * Created by hevilavio on 10/5/15.
@@ -27,10 +29,12 @@ public class UpdateUiListener implements SmsListener {
 
         int amountOfReceivedSms = smsList.size();
         toOpen.putExtra(AMOUNT_OF_SMS, amountOfReceivedSms);
+        toOpen.putExtra(WHO_IS, SMS_COUNT);
 
         Log.i(TAG, "enviando amountOfSms para RegisteredUserActivity" +
                 ", amountOfSms=" + amountOfReceivedSms);
 
-        context.startActivity(toOpen);
+        // Nao subir activity automaticamente
+//        context.startActivity(toOpen);
     }
 }

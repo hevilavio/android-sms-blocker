@@ -93,7 +93,7 @@ public class SmsDatabase extends CustomSQLiteOpenHelper {
         return list;
     }
 
-    public void setSentToServerWithSuccess(int smsId) {
+    public void updateSentToServerWithSuccess(int smsId) {
         ContentValues values = new ContentValues();
         values.put("sentToServer", 1);
 

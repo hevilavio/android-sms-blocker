@@ -42,7 +42,7 @@ public abstract class CustomSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     public String hc(){
-        return getWritableDatabase().isDatabaseIntegrityOk() ? "OK" : "ERRO";
+        return getWritableDatabase().isDatabaseIntegrityOk() ? "SIM" : "NAO";
     }
 
     public long insert(ContentValues values) {

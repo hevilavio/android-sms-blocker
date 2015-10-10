@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * TODO: Refactor desse método para uma outra classe.
+     * */
     private void startSendDataToServerSchedule() {
         Log.i(TAG, "startSendDataToServerSchedule.start");
 

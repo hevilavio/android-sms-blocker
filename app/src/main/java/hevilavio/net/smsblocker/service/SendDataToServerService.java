@@ -2,7 +2,6 @@ package hevilavio.net.smsblocker.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -45,10 +44,12 @@ public class SendDataToServerService extends Service {
 
             Pair<Integer, ArcaneSms> params = new Pair<>(pendingToSend.getId(), arcaneSms);
 
-            new ArcaneServiceAsynTask(smsDatabase).execute(params);
-            // TODO: Update sent = 1
+            new ArcaneSmsAsynTask(smsDatabase).execute(params);
 
-
+            /**
+             * ArcaneSmsAsynTask é responsável por atualizar o status
+             * @see {@link ArcaneSmsAsynTask#onPostExecute(Pair)}
+             * */
         }
 
         Log.i(TAG, "SendDataToServerService.onStartCommand.finish");

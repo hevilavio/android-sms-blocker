@@ -21,16 +21,16 @@ import hevilavio.net.smsblocker.json.ArcaneSms;
 /**
  * Created by hevilavio on 10/6/15.
  */
-public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, Void, Pair<Integer, Boolean>> {
+public class ArcaneSmsAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, Void, Pair<Integer, Boolean>> {
 
-    private final String TAG = "ArcaneServiceAsynTask";
+    private final String TAG = "ArcaneSmsAsynTask";
     private final String URL = "https://arcane-stream-8361.herokuapp.com/sms/teste";
     private final int TIMEOUT_SECONDS = 10;
     private final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
 
     private final SmsDatabase smsDatabase;
 
-    public ArcaneServiceAsynTask(SmsDatabase smsDatabase) {
+    public ArcaneSmsAsynTask(SmsDatabase smsDatabase) {
         this.smsDatabase = smsDatabase;
     }
 
@@ -52,14 +52,7 @@ public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, V
 
     @Override
     protected void onPostExecute(Pair<Integer, Boolean> result) {
-
-        int smsId = result.first;
-        Boolean sentWithSuccess = result.second;
-
-        if(sentWithSuccess){
-            Log.i(TAG, "onPostExecute.update, smsId=" + smsId);
-            smsDatabase.setSentToServerWithSuccess(smsId);
-        }
+        new UpdateSentToServerCallback(smsDatabase).execute(result);
     }
 
     public Pair<Integer, Boolean> sendSmsToArcane(int smsId, ArcaneSms arcaneSms) {
@@ -118,7 +111,7 @@ public class ArcaneServiceAsynTask extends AsyncTask<Pair<Integer, ArcaneSms>, V
 
         Sms sms = new Sms(0, "555", "body teste");
 
-        boolean ok = new ArcaneServiceAsynTask().sendSmsToArcane(1, ArcaneSms.buildFromSms("test user", sms));
+        boolean ok = new ArcaneSmsAsynTask().sendSmsToArcane(1, ArcaneSms.buildFromSms("test user", sms));
 
         System.out.println(ok);
     }*/
