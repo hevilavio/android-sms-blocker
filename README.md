@@ -7,7 +7,7 @@ Aplicativo para bloquear spam de sms.
 ### Instruções para instalação:
 * Habilite a permissão para instalação de APKs no seu Android
     * Configurações > Segurança > Marque “Fontes desconhecidas”
-* Faça download do app [aqui.](https://drive.google.com/uc?export=download&id=0B7pOPqyhZ2Qmc3NxWEs2ekxzUGs)
+* Faça download do app [aqui.](https://drive.google.com/uc?export=download&id=0B7pOPqyhZ2QmWk51a1lSSVh0cms)
 * Instale e abra o aplicativo.
 
 ### Configurando:
